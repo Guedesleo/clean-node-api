@@ -1,17 +1,19 @@
 import { HttRequest, HttpReponse } from "../protocols/http";
+
+import { MissingParmError } from "../errors/missing-param-error";
 export class SignUpController {
   handle(httpRequest: HttRequest): HttpReponse {
     if (!httpRequest.body.name) {
       return {
         statusCode: 400,
-        body: new Error("Missing param: name"),
+        body: new MissingParmError("name"),
       };
     }
 
     if (!httpRequest.body.email) {
       return {
         statusCode: 400,
-        body: new Error("Missing param: email"),
+        body: new MissingParmError("email"),
       };
     }
   }
