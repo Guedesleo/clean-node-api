@@ -116,7 +116,7 @@ describe("DbAddAccount Usecase", () => {
   });
 
   test("Should return an account on success", async () => {
-    const { sut, addAccountRepositoryStub } = makeSut();
+    const { sut } = makeSut();
     const accountData = {
       name: "valid_name",
       email: "valid_email",
