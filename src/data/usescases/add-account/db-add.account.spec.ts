@@ -70,15 +70,15 @@ describe("DbAddAccount Usecase", () => {
     jest
       .spyOn(encrypterStub, "encrypt")
       .mockReturnValueOnce(
-        new Promise((resolve, rejects) => rejects(new Error()))
+        new Promise((resolve, reject) => reject(new Error()))
       );
     const accountData = {
       name: "valid_name",
       email: "valid_email",
       password: "valid_password",
     };
-    const promise = await sut.add(accountData);
-    expect(promise).rejects.toThrow();
+    const promise = sut.add(accountData);
+    await expect(promise).rejects.toThrow();
   });
 
   test("Should call AddAccountRepository with correct values", async () => {
@@ -97,5 +97,21 @@ describe("DbAddAccount Usecase", () => {
       email: "valid_email",
       password: "hashed_password",
     });
+  });
+
+  test("Should throw if addAccountRepositoryStub throws", async () => {
+    const { sut, addAccountRepositoryStub } = makeSut();
+    jest
+      .spyOn(addAccountRepositoryStub, "add")
+      .mockReturnValueOnce(
+        new Promise((resolve, reject) => reject(new Error()))
+      );
+    const accountData = {
+      name: "valid_name",
+      email: "valid_email",
+      password: "valid_password",
+    };
+    const promise = sut.add(accountData);
+    await expect(promise).rejects.toThrow();
   });
 });
