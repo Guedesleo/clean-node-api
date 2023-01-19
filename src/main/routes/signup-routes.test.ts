@@ -6,7 +6,7 @@ describe("Signup Routes", () => {
   beforeAll(async () => MongoHelper.connect(process.env.MONGO_URL));
   afterAll(async () => MongoHelper.disconnect());
   beforeEach(async () => {
-    const accountCollection = MongoHelper.getCollection("accounts");
+    const accountCollection = await MongoHelper.getCollection("accounts");
     await accountCollection.deleteMany({});
   });
 
