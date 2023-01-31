@@ -1,6 +1,10 @@
 import { Authentication } from "../../../domain/usecases/authentication";
 import { InvalidParmError, MissingParmError } from "../../errors";
-import { badRequest, serverError } from "../../helpers/http-helper";
+import {
+  badRequest,
+  serverError,
+  unauthorized,
+} from "../../helpers/http-helper";
 import { Controller, HttpReponse, HttRequest } from "../../protocols";
 import { EmailValidator } from "../signup/signup-protocols";
 export class LoginController implements Controller {
@@ -27,7 +31,11 @@ export class LoginController implements Controller {
         return badRequest(new InvalidParmError("email"));
       }
 
-      await this.authentication.auth(email, password);
+      const accesToken = await this.authentication.auth(email, password);
+
+      if (!accesToken) {
+        return unauthorized();
+      }
     } catch (error) {
       return serverError(error);
     }
