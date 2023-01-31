@@ -5,9 +5,7 @@ import {
   unauthorized,
 } from "../../helpers/http-helper";
 import { InvalidParmError, MissingParmError } from "../../errors";
-import { EmailValidator, HttRequest } from "../signup/signup-protocols";
-import { Authentication } from "../../../domain/usecases/authentication";
-
+import { EmailValidator, HttRequest, Authentication } from "./login-protocols";
 const makeEmailValidor = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
     isValid(email: string): boolean {
