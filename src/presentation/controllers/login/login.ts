@@ -1,4 +1,4 @@
-import { MissingParmError } from "../../errors";
+import { InvalidParmError, MissingParmError } from "../../errors";
 import { badRequest } from "../../helpers/http-helper";
 import { Controller, HttpReponse, HttRequest } from "../../protocols";
 import { EmailValidator } from "../signup/signup-protocols";
@@ -20,6 +20,12 @@ export class LoginController implements Controller {
       );
     }
 
-    this.emailValidator.isValid(httpRequest.body.email);
+    const isValid = await this.emailValidator.isValid(httpRequest.body.email);
+
+    if (!isValid) {
+      return new Promise((resolve) =>
+        resolve(badRequest(new InvalidParmError("email")))
+      );
+    }
   }
 }
