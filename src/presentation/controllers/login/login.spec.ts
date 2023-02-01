@@ -6,7 +6,12 @@ import {
   ok,
 } from "../../helpers/http/http-helper";
 import { MissingParmError } from "../../errors";
-import { HttRequest, Authentication, Validation } from "./login-protocols";
+import {
+  HttRequest,
+  Authentication,
+  Validation,
+  AuthenticationModel,
+} from "./login-protocols";
 
 const makeValidaton = (): Validation => {
   class validatonStub implements Validation {
@@ -18,7 +23,7 @@ const makeValidaton = (): Validation => {
 };
 const makeAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    async auth(email: string, password: string): Promise<string> {
+    async auth(authentication: AuthenticationModel): Promise<string> {
       return new Promise((resolve) => resolve("any_token"));
     }
   }
@@ -56,7 +61,10 @@ describe("Login Controller", () => {
     const { sut, authenticationStub } = makeSut();
     const authSpy = jest.spyOn(authenticationStub, "auth");
     await sut.handle(makeFakeRequest());
-    expect(authSpy).toHaveBeenCalledWith("any_email@mail.com", "any_password");
+    expect(authSpy).toHaveBeenCalledWith({
+      email: "any_email@mail.com",
+      password: "any_password",
+    });
   });
 
   test("Should return 401 if  invalid credenditals is provider", async () => {
