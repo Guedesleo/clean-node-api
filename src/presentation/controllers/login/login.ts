@@ -3,6 +3,7 @@ import {
   badRequest,
   serverError,
   unauthorized,
+  ok,
 } from "../../helpers/http-helper";
 import {
   Controller,
@@ -35,11 +36,13 @@ export class LoginController implements Controller {
         return badRequest(new InvalidParmError("email"));
       }
 
-      const accesToken = await this.authentication.auth(email, password);
+      const accessToken = await this.authentication.auth(email, password);
 
-      if (!accesToken) {
+      if (!accessToken) {
         return unauthorized();
       }
+
+      return ok({ accessToken });
     } catch (error) {
       return serverError(error);
     }
