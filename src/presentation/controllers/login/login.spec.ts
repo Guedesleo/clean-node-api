@@ -3,10 +3,10 @@ import {
   badRequest,
   serverError,
   unauthorized,
+  ok,
 } from "../../helpers/http-helper";
 import { InvalidParmError, MissingParmError } from "../../errors";
 import { EmailValidator, HttRequest, Authentication } from "./login-protocols";
-import { rejects } from "assert";
 const makeEmailValidor = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
     isValid(email: string): boolean {
@@ -125,5 +125,11 @@ describe("Login Controller", () => {
       );
     const httpResponse = await sut.handle(makeFakeRequest());
     expect(httpResponse).toEqual(serverError(new Error()));
+  });
+
+  test("Should return 200 if  valid credenditals are provider", async () => {
+    const { sut, authenticationStub } = makeSut();
+    const httpResponse = await sut.handle(makeFakeRequest());
+    expect(httpResponse).toEqual(ok({ accessToken: "any_token" }));
   });
 });
