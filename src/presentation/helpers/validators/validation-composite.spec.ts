@@ -1,4 +1,4 @@
-import { MissingParmError } from "../../../errors";
+import { MissingParmError } from "../../errors";
 import { Validation } from "./validation";
 import { ValidationComposite } from "./validation-composite";
 

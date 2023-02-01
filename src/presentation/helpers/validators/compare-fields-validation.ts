@@ -1,4 +1,4 @@
-import { InvalidParmError, MissingParmError } from "../../../errors";
+import { InvalidParmError, MissingParmError } from "../../errors";
 import { Validation } from "./validation";
 
 export class CompareFieldsValidation implements Validation {
