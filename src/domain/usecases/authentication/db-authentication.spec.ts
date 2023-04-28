@@ -153,4 +153,12 @@ describe("DbAuthentication UseCase", () => {
 
     await expect(promise).rejects.toThrow();
   });
+
+  test("Should call TokenGenerator with correct id", async () => {
+    const { sut, tokenGeneratorStub } = makeSut();
+
+    const accesTokn = await sut.auth(makeFakeAuthenticaiton());
+
+    expect(accesTokn).toBe("any_token");
+  });
 });
